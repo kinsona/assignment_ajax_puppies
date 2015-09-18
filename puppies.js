@@ -9,7 +9,8 @@ PUPPYSHELTER.puppies = (function() {
   function init() {
     _getBreeds();
     _getList();
-    $('.puppy-list a').on('click', _getList);
+    $('.puppy-refresh').on('click', _getList);
+    $('.puppies').on('click', _adoptPuppy);
     $('form').on('submit', _submitPuppy)
     $_breedSelect = $('select');
     $_puppiesList = $('.puppies');
@@ -19,7 +20,7 @@ PUPPYSHELTER.puppies = (function() {
   function _getBreeds() {
     $.ajax( {
       url: "https://pacific-stream-9205.herokuapp.com/breeds.json",
-      type: 'get',
+      method: 'get',
       dataType: 'json',
       success: _addBreedsToSelect
     })
@@ -39,7 +40,7 @@ PUPPYSHELTER.puppies = (function() {
 
     $.ajax( {
       url: "https://pacific-stream-9205.herokuapp.com/puppies.json",
-      type: 'get',
+      method: 'get',
       dataType: 'json',
       success: _list
     })
@@ -79,6 +80,7 @@ PUPPYSHELTER.puppies = (function() {
 
 
   function _submitPuppy() {
+    event.preventDefault();
 
     var $form = $('form');
 
@@ -94,7 +96,7 @@ PUPPYSHELTER.puppies = (function() {
     $.ajax( {
       url: "https://pacific-stream-9205.herokuapp.com/puppies.json",
       data: JSON.stringify(formData),
-      type: "post",
+      method: "post",
       contentType: "application/json",
       dataType: "json",
 
@@ -104,7 +106,6 @@ PUPPYSHELTER.puppies = (function() {
       error: _renderError
     })
 
-    event.preventDefault();
   }
 
 
@@ -127,6 +128,18 @@ PUPPYSHELTER.puppies = (function() {
       $label.addClass('error-label');
     };
 
+  }
+
+
+  function _adoptPuppy() {
+    event.preventDefault();
+
+    $.ajax( {
+      url: event.target.href,
+      method: 'delete'
+    });
+
+    event.target.parentElement.remove()
   }
 
 
