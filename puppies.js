@@ -150,5 +150,6 @@ PUPPYSHELTER.puppies = (function() {
 })();
 
 $(document).ready(function() {
+  PUPPYSHELTER.notify.init();
   PUPPYSHELTER.puppies.init();
 })
