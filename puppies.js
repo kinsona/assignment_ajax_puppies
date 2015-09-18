@@ -47,6 +47,8 @@ PUPPYSHELTER.puppies = (function() {
 
 
   function _list(json) {
+    $_puppiesList.empty();
+
     json.forEach( function(puppy, index) {
       _render(puppy);
     });
@@ -67,13 +69,18 @@ PUPPYSHELTER.puppies = (function() {
   function _submitPuppy() {
 
     var $form = $('form');
-    var formData = $form.serialize();
-    //var newName = $form.find('#name').val();
-    //var selectedBreed = $form.find('#breed option:selected').val();
+
+    var newName = $form.find('#name').val();
+    var selectedBreed = $form.find('#breed option:selected').val();
+
+    var formData = {
+      name: newName,
+      breed_id: selectedBreed
+    };
 
     $.ajax( {
       url: "https://pacific-stream-9205.herokuapp.com/puppies.json",
-      data: formData,
+      data: JSON.stringify(formData),
       type: "post",
       contentType: "application/json",
       dataType: "json",
@@ -86,7 +93,6 @@ PUPPYSHELTER.puppies = (function() {
 
   return {
     init: init
-    //list: list
   }
 
 })();
