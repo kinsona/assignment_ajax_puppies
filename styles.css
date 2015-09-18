@@ -10,7 +10,7 @@ h3 {
 
 
 /* Form */
-form label,input,select {
+form input,select {
   width: 200px;
   display: block;
 }
@@ -21,6 +21,14 @@ form label,input,select {
 
 #submit {
   margin: 2em 0;
+}
+
+.error {
+  display: inline;
+}
+
+.error, .error-label {
+  color: red;
 }
 
 

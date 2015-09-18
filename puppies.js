@@ -100,7 +100,8 @@ PUPPYSHELTER.puppies = (function() {
 
       success: function(response) {
         _render(response, breedName);
-      }
+      },
+      error: _renderError
     })
 
     event.preventDefault();
@@ -111,6 +112,21 @@ PUPPYSHELTER.puppies = (function() {
     // hit api with id
     response.breed.name = breedName;
     _render(response);
+  }
+
+
+  function _renderError(response, status, error) {
+    var errors = response.responseJSON;
+
+    for(var field in errors) {
+      var labelText = field[0].toUpperCase() + field.slice(1)
+      var $message = $("<p class='error'> " + errors[field] + "</p>")
+      var $label = $("form label:contains('" + labelText + "')")
+
+      $message.insertAfter($label);
+      $label.addClass('error-label');
+    };
+
   }
 
 
