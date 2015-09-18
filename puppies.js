@@ -81,6 +81,8 @@ PUPPYSHELTER.puppies = (function() {
 
   function _submitPuppy() {
     event.preventDefault();
+    $('.error').remove();
+    $('label').removeClass('error-label');
 
     var $form = $('form');
 
