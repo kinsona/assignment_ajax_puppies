@@ -49,20 +49,32 @@ PUPPYSHELTER.puppies = (function() {
   function _list(json) {
     $_puppiesList.empty();
 
+    json.sort(function(a,b) {
+      a = new Date(a.created_at);
+      b = new Date(b.created_at);
+      return a - b;
+    });
+
     json.forEach( function(puppy, index) {
       _render(puppy);
     });
   };
 
 
-  function _render(puppy) {
+  function _render(puppy, breedName) {
     var name = "<strong>" + puppy.name + "</strong> ";
-    var breed = "(" + puppy.breed.name + "), ";
+
+    if (breedName) {
+      var breed = "(" + breedName + "), ";
+    } else {
+      var breed = "(" + puppy.breed.name + "), ";
+    };
+
     var timestamp = "created " + jQuery.timeago(puppy.created_at) + " -- ";
     var link = "<a href='" + puppy.url + "'>adopt</a>";
 
     var listItem = "<li>" + name + breed + timestamp + link + "</li>";
-    $(listItem).appendTo($_puppiesList);
+    $(listItem).prependTo($_puppiesList);
   };
 
 
@@ -72,6 +84,7 @@ PUPPYSHELTER.puppies = (function() {
 
     var newName = $form.find('#name').val();
     var selectedBreed = $form.find('#breed option:selected').val();
+    var breedName = $form.find('#breed option:selected').text()
 
     var formData = {
       name: newName,
@@ -84,10 +97,20 @@ PUPPYSHELTER.puppies = (function() {
       type: "post",
       contentType: "application/json",
       dataType: "json",
-      success: _getList
+
+      success: function(response) {
+        _render(response, breedName);
+      }
     })
 
     event.preventDefault();
+  }
+
+
+  function _getPuppy(response, breedName) {
+    // hit api with id
+    response.breed.name = breedName;
+    _render(response);
   }
 
 
