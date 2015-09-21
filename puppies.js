@@ -10,7 +10,7 @@ PUPPYSHELTER.puppies = (function() {
     _getBreeds();
     _getList();
     $('.puppy-refresh').on('click', _getList);
-    $('.puppies').on('click', _adoptPuppy);
+    $('.puppies').on('click', 'a', _adoptPuppy);
     $('form').on('submit', _submitPuppy)
     $_breedSelect = $('select');
     $_puppiesList = $('.puppies');
